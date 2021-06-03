@@ -1,4 +1,11 @@
-# Instructions for Cloudflare Tunnels (formerly known as Argo Tunnels) on Unraid
+# Instructions for Cloudflare Tunnels (formerly known as Argo Tunnels) on DOCKER
+
+
+### NOT COMPLETE - DO NOT USE
+
+
+
+
 
 Argo Tunnel creates a secure, outbound-only connection between your services and Cloudflare by deploying a lightweight connector in your environment. With this model, your team does not need to go through the hassle of poking holes in your firewall or validating that traffic originated from Cloudflare IPs.
 
@@ -8,17 +15,17 @@ For this setup, you need to have a domain which is managed by CloudFlare, and ca
 
 # Set-Up Steps
 
-1. In unraid temrinal, run the following command to authorise cloudflared with the cloudflare site you want to setup with a tunnel.
+1. In your temrinal, run the following command to authorise cloudflared with the cloudflare site you want to setup with a tunnel.
 
 ```
-docker run -it --rm -v /mnt/user/appdata/cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel login 
+docker run -it --rm -v ./cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel login 
 ```
 It will print out a link to cloudflare. Put this link in your web browser, and select which domain you want to use. Then, the daemon will automatically pull the certificate.
 
 2. Now we need to create a tunnel. To do this we will run another command from the unraid terminal
 
 ```
-docker run -it --rm -v /mnt/user/appdata/cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel create TUNNELNAME
+docker run -it --rm -v ./cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel create TUNNELNAME
 ```
 
 This will create your tunnels UUID.json file, which contains a secret used to authenticate your tunneled connection with cloudflare. The JSON file is only needed for running the tunnel, but any tunnel modifications require the cert.pem. More information about what requires what can be found [here](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/create-tunnel).
@@ -28,13 +35,13 @@ Make sure you copy your UUID, as this will be used in later steps. It can always
 3. Now we need to create a config.yaml to configure the tunnel
 
 ```
-nano /mnt/user/appdata/cloudflared/config.yaml
+nano ./cloudflared/cloudflared/config.yaml
 ```
 4. Now paste in the following and amend your reverse proxy IP:PORT and tunnel UUID
 
 ```
 tunnel: UUID
-credentials-file: /home/nonroot/.cloudflared/UUID.json
+credentials-file: /cloudflared/.cloudflared/UUID.json
 
 ingress:
   - service: https://REVERSEPROXYIP:PORT/
