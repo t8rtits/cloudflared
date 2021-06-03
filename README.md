@@ -1,4 +1,4 @@
-# Instructions for Cloudflare Tunnels (formerly known as Argo Tunnels) on DOCKER
+# Instructions for Cloudflare Tunnels on DOCKER with Nginx Proxy Manager(formerly known as Argo Tunnels)
 
 
 # NOT COMPLETE - DO NOT USE
@@ -11,7 +11,10 @@ Argo Tunnel creates a secure, outbound-only connection between your services and
 
 # Prerequisite
 
-For this setup, you need to have a domain which is managed by CloudFlare, and can be done on the free plan. 
+For this setup you need:
+1. A domain which is managed by CloudFlare, and can be done on the free plan. 
+2. Docker running on a server.
+3. Nginx Proxy Manager setup and running.
 
 # Set-Up Steps
 
@@ -22,11 +25,15 @@ docker run -it --rm -v ./cloudflared:/home/nonroot/.cloudflared/ cloudflare/clou
 ```
 It will print out a link to cloudflare. Put this link in your web browser, and select which domain you want to use. Then, the daemon will automatically pull the certificate.
 
-2. Now we need to create a tunnel. To do this we will run another command from the unraid terminal
+2. Now we need to create a tunnel. To do this we will run another command from the unraid terminal<br>
+\*\*\* Change TUNNELNAME to the name of the tunnel you wish to create \*\*\*
 
 ```
 docker run -it --rm -v ./cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel create TUNNELNAME
 ```
+
+
+
 
 This will create your tunnels UUID.json file, which contains a secret used to authenticate your tunneled connection with cloudflare. The JSON file is only needed for running the tunnel, but any tunnel modifications require the cert.pem. More information about what requires what can be found [here](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/create-tunnel).
 
