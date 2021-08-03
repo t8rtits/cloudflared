@@ -21,7 +21,7 @@ For this setup you need:
 1. In your temrinal, run the following command to authorise cloudflared with the cloudflare site you want to setup with a tunnel.
 
 ```
-docker run -it --rm -v ./cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel login 
+docker run -it --rm -v /cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel login 
 ```
 It will print out a link to cloudflare. Put this link in your web browser, and select which domain you want to use. Then, the daemon will automatically pull the certificate.
 
@@ -29,7 +29,7 @@ It will print out a link to cloudflare. Put this link in your web browser, and s
 \*\*\* Change TUNNELNAME to the name of the tunnel you wish to create \*\*\*
 
 ```
-docker run -it --rm -v ./cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel create TUNNELNAME
+docker run -it --rm -v /cloudflared:/home/nonroot/.cloudflared/ cloudflare/cloudflared tunnel create TUNNELNAME
 ```
 
 
@@ -42,7 +42,7 @@ Make sure you copy your UUID, as this will be used in later steps. It can always
 3. Now we need to create a config.yaml to configure the tunnel
 
 ```
-nano ./cloudflared/cloudflared/config.yaml
+nano /cloudflared/cloudflared/config.yaml
 ```
 4. Now paste in the following and amend your reverse proxy IP:PORT and tunnel UUID
 
